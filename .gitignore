@@ -1,1 +1,5 @@
 /target
+main.nml
+/vscode-extension/node_modules
+src.c
+src.exe

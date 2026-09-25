@@ -10,7 +10,8 @@ fn main() {
         use clap::Parser;
         args::Args::parse()
     };
-    let source_content = std::fs::read_to_string(args.source).unwrap();
+    let source = args.source.expect("a source file is required unless --lsp is used");
+    let source_content = std::fs::read_to_string(source).unwrap();
     let input = Located::new(source_content.as_str());
     let output = syntax::parse_program.parse(input).unwrap();
     let c = Codegen::translate(
