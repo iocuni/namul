@@ -1,0 +1,30 @@
+|i32 N|
+[i32; 1010] s;
+[i32; 1010] e;
+
+rep i, N {
+    |s[i], e[i]|
+}
+
+rep i, N {
+    rep j, N - i - 1 {
+        if s[j] > s[j + 1] {
+            i32 t = s[j];
+            s[j] = s[j + 1];
+            s[j + 1] = t;
+            t = e[j];
+            e[j] = e[j + 1];
+            e[j + 1] = t;
+        }
+    }
+}
+
+i32 t = 0;
+rep i, N {
+    if t < s[i] { 
+        t = s[i];
+    }
+    t += e[i];
+}
+
+`$`, t;

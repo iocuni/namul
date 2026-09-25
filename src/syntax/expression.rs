@@ -480,10 +480,10 @@ pub fn parse_assignment(s: &mut Located<&str>) -> PResult<Assignment> {
 
 pub fn parse_assignee(s: &mut Located<&str>) -> PResult<Assignee> {
     alt((
+        parse_index_only.map(Assignee::Index),
         parse_declaration.map(Assignee::Declaration),
         parse_assignee_tuple.map(Assignee::Tuple),
         parse_assignee_array.map(Assignee::Array),
-        parse_index_only.map(Assignee::Index),
         parse_path.map(Assignee::Path),
         delimited(
             TokenKind::PunctLeftParenthesis,
