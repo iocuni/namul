@@ -163,6 +163,12 @@ impl Codegen {
     pub fn path(&mut self, path: &Path) -> Intermediate {
         let result = match path {
             Path::Simple(ident) => {
+                if let Some(builtin) = crate::syntax::function::BUILTINS
+                    .iter()
+                    .find(|builtin| builtin.name == ident.content)
+                {
+                    self.feature.insert(builtin.name);
+                }
                 let scope = Rc::clone(&self.stack.last().unwrap());
                 let scope = scope.borrow();
                 let var = scope.get_var(&ident.content).unwrap();
@@ -1065,6 +1071,11 @@ impl Codegen {
             }
             if translator.feature.contains("read_str") {
                 out.push_str(include_str!("fragments/read_str.c"));
+            }
+        }
+        for builtin in crate::syntax::function::BUILTINS {
+            if translator.feature.contains(builtin.name) {
+                out.push_str(builtin.c_definition);
             }
         }
         out.push_str(&translator.decl);

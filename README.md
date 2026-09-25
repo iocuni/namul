@@ -5,6 +5,10 @@
 
 Namul is a programming language for competitive programming.
 
+## Built-in functions
+
+Add a Rust file under `src/syntax/function/` to register a built-in function automatically. The file must define a `BUILTIN` constant using the template in `src/syntax/function/_template.rs`. Files beginning with `_` are ignored by the automatic module generator.
+
 ## Hello World
 
 A *format string* is an expression that prints formatted text. 

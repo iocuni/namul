@@ -7,6 +7,7 @@ use winnow::{
 
 pub mod expression;
 pub mod format;
+pub mod function;
 pub mod item;
 pub mod literal;
 pub mod path;

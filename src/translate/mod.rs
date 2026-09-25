@@ -318,9 +318,21 @@ impl Scope {
             "char".into(),
             Rc::new(RefCell::new(TypeInference::Simple(TypeInstance::Char))),
         );
+        let mut var = HashMap::new();
+        for builtin in crate::syntax::function::BUILTINS {
+            ty.insert(builtin.name.into(), Rc::new(RefCell::new(builtin.type_inference())));
+            var.insert(
+                builtin.name.into(),
+                Variable {
+                    mangle: builtin.name.into(),
+                    ty: Rc::new(RefCell::new(builtin.type_inference())),
+                    is_global: false,
+                },
+            );
+        }
         Self {
             parent: None,
-            var: Default::default(),
+            var,
             ty,
             is_boundary: false,
         }
