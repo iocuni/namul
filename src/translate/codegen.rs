@@ -1214,7 +1214,18 @@ impl Codegen {
         let Some(var_ty) = self.synthesize(&var.var.ty.borrow()) else {
             panic!("Could not deduce type.");
         };
-        writeln!(effect, "{};", &var_ty.declare(&var.var.mangle)).unwrap();
+        let storage = if matches!(&var_ty, TypeInstance::Array { .. }) {
+            "static "
+        } else {
+            ""
+        };
+        writeln!(
+            effect,
+            "{}{};",
+            storage,
+            &var_ty.declare(&var.var.mangle)
+        )
+        .unwrap();
         if var.var.is_global {
             writeln!(
                 globals,
@@ -1436,7 +1447,12 @@ impl Codegen {
                 if matches!(ty, TypeInstance::Slice { .. }) {
                     panic!("Could not initialize slice with input");
                 }
-                writeln!(effect, "{};", ty.declare(&var.var.mangle)).unwrap();
+                let storage = if matches!(&ty, TypeInstance::Array { .. }) {
+                    "static "
+                } else {
+                    ""
+                };
+                writeln!(effect, "{}{};", storage, ty.declare(&var.var.mangle)).unwrap();
                 self.assign_input(globals, funcs, effect, &ty, &var.var.mangle);
                 if var.var.is_global {
                     writeln!(globals, "{};", ty.declare(&format!("*g{}", var.var.mangle))).unwrap();

@@ -1,0 +1,42 @@
+i32 pos = 0;
+[i32; 1010101] A;
+
+|i32 N|
+rep N {
+    |char c|;
+    if c == 105 {
+        |i32 x|;
+        push(x);
+    }
+    else {
+        if c == 111 {
+            if size() != 0 {
+                i32 p = pop();
+                `$\n`, p;
+            } else {
+                `empty\n`;
+            }
+        } else {
+            i32 sz = size();
+            `$\n`, sz;
+        }
+    }
+}
+
+fn push(i32 x) {
+    A[pos] = x;
+    pos += 1;
+}
+
+fn pop() i32 {
+    pos -= 1;
+    A[pos]
+}
+
+fn top() i32 {
+    A[pos - 1]
+}
+
+fn size() i32 {
+    pos
+}
